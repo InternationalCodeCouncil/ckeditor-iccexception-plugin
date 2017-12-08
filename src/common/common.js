@@ -44,15 +44,19 @@ export const find = (element, criteria, recursive = false) => {
  * @param widget
  * @param object
  */
-export const toggleWidgetState = (widget, object) => {
+export const toggleWidgetState = (widgets, object) => {
     // disable button On Focus
     object.onfocus = () => {
-        widget.setState(CKEDITOR.TRISTATE_DISABLED);
+        for (let index = 0; index < widgets.length; index++) {
+            widgets[index].setState(CKEDITOR.TRISTATE_DISABLED);
+        }
     };
 
     // restore button On Focus Out
     object.onfocusout = () => {
-        widget.setState(CKEDITOR.TRISTATE_OFF);
+        for (let index = 0; index < widgets.length; index++) {
+            widgets[index].setState(CKEDITOR.TRISTATE_OFF);
+        }
     };
 };
 
