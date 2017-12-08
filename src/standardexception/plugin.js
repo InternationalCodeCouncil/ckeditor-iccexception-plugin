@@ -2,25 +2,34 @@ import {hasList} from '../common/common';
 import {toggleWidgetState} from '../common/common';
 
 (function () {
-    let blockNestedExceptionList = (editor, event, name) => {
-        // running this code only when "exceptionlist" widget is initiated
-        if (editor.commands.exceptionlist !== undefined) {
-            let sender = event.sender;
-            let content = sender.editables.content.$;
+    let title = 'standardexception';
+    let block = [
+        title,
+        'exceptionlist'
+    ];
+
+    let blockNestedExceptions = (editor, event, names) => {
+        let sender = event.sender;
+        let content = sender.editables.content.$;
+        let widgets = [];
+
+        names.forEach(function (name) {
             let widget = editor.commands[name];
 
-            toggleWidgetState(widget, content);
-        }
+            widgets.push(widget);
+        });
+
+        toggleWidgetState(widgets, content);
     };
 
     CKEDITOR.dtd.$editable.span = 1;
     CKEDITOR.plugins.add(
-        'standardexception', {
+        title, {
             requires: 'widget',
-            icons: 'standardexception',
+            icons: title,
             init: (editor) => {
                 editor.widgets.add(
-                    'standardexception', {
+                    title, {
                         button: 'Add a standard exception',
 
                         template: `<div class="exception">
@@ -45,16 +54,21 @@ import {toggleWidgetState} from '../common/common';
 
                         // function fires when initially entering current widget's editable area
                         edit: (event) => {
-                            // disable "Exception List" button when editing "Regular Exception"
-                            blockNestedExceptionList(editor, event, 'exceptionlist');
+                            blockNestedExceptions(editor, event, block);
+                        },
+
+                        // function fires when processing imported widget's editable area
+                        data: (event) => {
+                            blockNestedExceptions(editor, event, block);
                         },
 
                         upcast: (element) => {
-                            return element.name === 'div' && element.hasClass('exception') && !hasList(element);
+                            return (element.name === 'div' && element.hasClass('exception') && !hasList(element));
                         }
                     }
                 )
             }
+
         }
-    )
+    );
 })();

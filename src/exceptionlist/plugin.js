@@ -2,27 +2,36 @@ import {hasList} from '../common/common';
 import {toggleWidgetState} from '../common/common';
 
 (function () {
-    let nestedStandardException = (editor, event, name) => {
-        // running this code only when "standardexception" widget is initiated
-        if (editor.commands.standardexception !== undefined) {
-            let sender = event.sender;
-            let content = sender.editables.content.$;
-            let list = sender.editables.list.$;
+    let title = 'exceptionlist';
+    let block = [
+        title,
+        'standardexception'
+    ];
+
+    let blockNestedExceptions = (editor, event, names) => {
+        let sender = event.sender;
+        let content = sender.editables.content.$;
+        let list = sender.editables.list.$;
+        let widgets = [];
+
+        names.forEach(function (name) {
             let widget = editor.commands[name];
 
-            toggleWidgetState(widget, content);
-            toggleWidgetState(widget, list);
-        }
+            widgets.push(widget);
+        });
+
+        toggleWidgetState(widgets, content);
+        toggleWidgetState(widgets, list);
     };
 
     CKEDITOR.dtd.$editable.span = 1;
     CKEDITOR.plugins.add(
-        'exceptionlist', {
+        title, {
             requires: 'widget',
-            icons: 'exceptionlist',
+            icons: title,
             init: (editor) => {
                 editor.widgets.add(
-                    'exceptionlist', {
+                    title, {
                         button: 'Add an exception list',
 
                         template: `<div class="exception">
@@ -60,16 +69,14 @@ import {toggleWidgetState} from '../common/common';
                         allowedContent: 'div(!exception); span(!run_in); div(!list);',
                         requiredContent: 'div(exception); span(run_in); div(list);',
 
-                        nestedEditable: (event) => {
-                            console.log('exceptionlist nestedEditable');
-
-                            console.log(event);
+                        // function fires when processing imported widget's editable area
+                        data: (event) => {
+                            blockNestedExceptions(editor, event, block);
                         },
 
                         // function fires when initially entering current widget's editable area
                         edit: (event) => {
-                            // disable "Exception List" button when editing "Regular Exception"
-                            nestedStandardException(editor, event, 'standardexception');
+                            blockNestedExceptions(editor, event, block);
                         },
 
                         upcast: (element) => {
