@@ -1,6 +1,11 @@
+/**
+ * @param element
+ * @returns {boolean}
+ */
 export const hasList = (element) => {
     return find(element, child => child.name === 'ol' || child.name === 'ul', true).length > 0;
 };
+
 
 /**
  * Implementation of CKEDITOR.htmlParser.element.find() that was added in 4.6 for backwards compatibility reasons.
@@ -35,6 +40,23 @@ export const find = (element, criteria, recursive = false) => {
     return ret;
 };
 
+/**
+ * @param widget
+ * @param object
+ */
+export const toggleWidgetState = (widget, object) => {
+    // disable button On Focus
+    object.onfocus = () => {
+        widget.setState(CKEDITOR.TRISTATE_DISABLED);
+    };
+
+    // restore button On Focus Out
+    object.onfocusout = () => {
+        widget.setState(CKEDITOR.TRISTATE_OFF);
+    };
+};
+
 export default {
-    hasList
+    hasList,
+    toggleWidgetState
 }

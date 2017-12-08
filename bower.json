@@ -3,6 +3,8 @@
   "description": "CKEditor plugin for adding exceptions and exception lists",
   "main": "index.js",
   "authors": [
+    "Przemek Wiejak <pwiejak@iccsafe.org>",
+    "Przemek Wiejak <wiejakp@gmail.com>",
     "Caxy <dev@caxy.com>"
   ],
   "license": "MIT",

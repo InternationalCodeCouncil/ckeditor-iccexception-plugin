@@ -11,7 +11,8 @@
     "compile": "yarn run clean && webpack --config config/webpack.config"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "rimraf": "^2.6.2"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
