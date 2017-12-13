@@ -61,4 +61,4 @@ typings/
 
 
 # custom -- PW
-dist/*
+dist/
