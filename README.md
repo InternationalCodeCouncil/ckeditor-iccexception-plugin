@@ -1,21 +1,37 @@
-# ICC List Plugin for CKEditor
+# ICC Exceptions Plugin for CKEditor
 
-# Setup
+## Install
 
-First, install encore and dependenices (builds `node_modules` folder).
+Install via yarn (or npm)
 
 ```bash
-$ yarn install --dev
+$ yarn add ckeditor-iccexception-plugin # or npm install --save ckeditor-iccexception-plugin
 ```
 
-Build the plugin (creates the `dist` folder with all files).
+Install via bower
 
 ```bash
-$ yarn run encore dev
+$ bower install --save ckeditor-iccexception-plugin
+```
+
+## Usage
+
+...
+
+## Development
+
+This uses webpack to compile the plugins into the dist directory. The JS files are passed through [babel-loader](https://github.com/babel/babel-loader) and are bundled into a single `plugin.js` file for each plugin directory.
+
+The webpack configuration expects the list of plugins it needs to compile in `config/project.config.js` at property `config.pluginNames`. Therefore, if a plugin directory name is changed, the plugin name in `config/project.config.js` must also be changed.
+
+#### Setup
+
+```bash
+$ yarn install
 ```
 
 #### To compile for release:
 
 ```bash
-$ yarn run encore production
+$ yarn run compile
 ```
